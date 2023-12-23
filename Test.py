@@ -71,10 +71,9 @@ def search(query,image=None,alpha=0):
     # use returned product ids to get images
     imgs = [images[int(r["id"])] for r in result["matches"]]
     label= [x["metadata"]['productDisplayName']  for x in result["matches"] ]
-    return imgs, label 
+    score= [x["score"]  for x in result["matches"] ]
+    return imgs, label, score
     # display the images
-imgs, label = search(query="men watch",alpha=0.3)
-dem=0  
 
 
 def main():
@@ -98,18 +97,21 @@ def main():
     if query_image is not None:
         if uploaded_file is not None:
             query_image = Image.open(uploaded_file)
-        a=query_image.resize((224, 224))
+        a=query_image.resize((224, 320))
         st.image(a, caption="Retrieved image")
     
-    imgs, label = search(query=title,image=query_image,alpha=float(alphaa))
+    imgs, label , score = search(query=title,image=query_image,alpha=float(alphaa))
     dem=0
   with col2:
     st.subheader("Retrieved images")
     cols = cycle(st.columns(5))
     for idx in imgs:
-        next(cols).image(
+        current_col = next(cols)
+        current_col.subheader('Score: '+str(round(score[dem], 2)), divider='rainbow')
+        current_col.image(
              idx, width=150, caption=label[dem], use_column_width=True
         )
+        
         dem+=1
 
 
