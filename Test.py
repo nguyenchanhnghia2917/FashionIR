@@ -82,24 +82,22 @@ def main():
   with col1:
     st.subheader("Alpha")
     alphaa = st.text_input(
-       'Input alpha', '0.3',
+       'Input alpha', '0.5',
         label_visibility="collapsed",)
     st.subheader("Text Query")
     title = st.text_input(
-       '', '',
+       '', 'Men watch',
         label_visibility="collapsed",
         )
     st.subheader("Query image")
     uploaded_file = st.file_uploader(
             "Drop file here", type=["png", "jpg"], accept_multiple_files=False
         )
-    query_image=images[36254]
-    if query_image is not None:
-        if uploaded_file is not None:
+    query_image=None
+    if uploaded_file is not None:
             query_image = Image.open(uploaded_file)
-        a=query_image.resize((224, 320))
-        st.image(a, caption="Retrieved image")
-    
+            a=query_image.resize((224, 320))
+            st.image(a, caption="Retrieved image")
     imgs, label , score = search(query=title,image=query_image,alpha=float(alphaa))
     dem=0
   with col2:
